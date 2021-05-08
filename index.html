@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        table, table tr td{
+            border: 1px solid black;
+        }
+    </style>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script
+  src="https://code.jquery.com/jquery-3.6.0.min.js"
+  integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+  crossorigin="anonymous"></script>
+    <script>
+       $(document).ready(function(){
+           setInterval(() => {
+            getStatus();
+           }, 1000);
+       });
+       function getStatus(){
+            var bodyHtml = '';
+            $.ajax({url: "https://cdn-api.co-vin.in/api/v2/appointment/sessions/calendarByDistrict?district_id=294&date=08-05-2021", success: function(result){
+                    result.centers.map(sessions=>{
+                        sessions.sessions.map(sessionsAge => {
+                            if(sessionsAge.min_age_limit < 45){
+                                bodyHtml += '<tr><td>'+sessions.name+'</td><td>'+sessionsAge.vaccine+'</td><td>'+sessionsAge.min_age_limit+'</td><td>'+sessionsAge.date+'</td><td>'+sessionsAge.available_capacity+'</td></tr>';
+                            }
+                        })
+                    })
+                    $('#bodyContent').html(bodyHtml);
+            }});
+       }
+    </script>
+</head>
+<body>
+    <table>
+        <thead>
+            <tr>
+                <td>Hospital</td>
+                <td>Vaccine Name</td>
+                <td>Age</td>
+                <td>Date</td>
+                <td>Availability</td>
+            </tr>
+        </thead>
+        <tbody id="bodyContent">
+
+        </tbody>
+    </table>
+</body>
+</html>
