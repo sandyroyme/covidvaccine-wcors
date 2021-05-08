@@ -13,6 +13,9 @@
             background-color: #008000;
             color: #ffffff;
         }
+        .dropdownContainer{
+            padding: 2rem 0;
+        }
     </style>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -23,14 +26,16 @@
   integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
   crossorigin="anonymous"></script>
     <script>
-       $(document).ready(function(){
-           setInterval(() => {
-            getStatus();
-           }, 1000);
-       });
-       function getStatus(){
+       var districtId = '';
+       function setDistrict(){
+            districtId = $('#districtList').val();
+            setInterval(() => {
+                getStatus(districtId);
+            }, 1000);
+        }
+       function getStatus(selectedDistrict){
             var bodyHtml = '';
-            $.ajax({url: "https://cdn-api.co-vin.in/api/v2/appointment/sessions/calendarByDistrict?district_id=294&date=09-05-2021", success: function(result){
+            $.ajax({url: "https://cdn-api.co-vin.in/api/v2/appointment/sessions/calendarByDistrict?district_id="+selectedDistrict+"&date=09-05-2021", success: function(result){
                     
                     result.centers.map(sessions=>{
                         sessions.sessions.map(sessionsAge => {
@@ -49,6 +54,13 @@
     </script>
 </head>
 <body>
+    <div class="dropdownContainer">
+        <label for="">Select State</label>
+        <select onchange="setDistrict()" name="districtList" id="districtList">
+            <option value="45">Tinsikua</option>
+            <option value="294">BBMP</option>
+        </select>
+    </div>
     <table>
         <thead>
             <tr>
