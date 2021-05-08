@@ -5,6 +5,14 @@
         table, table tr td{
             border: 1px solid black;
         }
+        .ca-na{
+            background-color: #ff0000;
+        }
+
+        .ca-a{
+            background-color: #008000;
+            color: #ffffff;
+        }
     </style>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -22,11 +30,16 @@
        });
        function getStatus(){
             var bodyHtml = '';
-            $.ajax({url: "https://cdn-api.co-vin.in/api/v2/appointment/sessions/calendarByDistrict?district_id=294&date=08-05-2021", success: function(result){
+            $.ajax({url: "https://cdn-api.co-vin.in/api/v2/appointment/sessions/calendarByDistrict?district_id=294&date=09-05-2021", success: function(result){
+                    
                     result.centers.map(sessions=>{
                         sessions.sessions.map(sessionsAge => {
                             if(sessionsAge.min_age_limit < 45){
-                                bodyHtml += '<tr><td>'+sessions.name+'</td><td>'+sessionsAge.vaccine+'</td><td>'+sessionsAge.min_age_limit+'</td><td>'+sessionsAge.date+'</td><td>'+sessionsAge.available_capacity+'</td></tr>';
+                                var capacityStatus = 'ca-na';
+                                if(sessionsAge.available_capacity > 0){
+                                    capacityStatus = 'ca-a';
+                                }
+                                bodyHtml += '<tr><td>'+sessions.name+'</td><td>'+sessions.pincode+'</td><td>'+sessionsAge.vaccine+'</td><td>'+sessionsAge.min_age_limit+'</td><td>'+sessionsAge.date+'</td><td class="'+capacityStatus+'"">'+sessionsAge.available_capacity+'</td></tr>';
                             }
                         })
                     })
@@ -40,6 +53,7 @@
         <thead>
             <tr>
                 <td>Hospital</td>
+                <td>Pincode</td>
                 <td>Vaccine Name</td>
                 <td>Age</td>
                 <td>Date</td>
@@ -50,5 +64,7 @@
 
         </tbody>
     </table>
+
+    
 </body>
 </html>
