@@ -27,11 +27,17 @@
   crossorigin="anonymous"></script>
     <script>
        var districtId = '';
+       var statusInterval;
        function setDistrict(){
             districtId = $('#districtList').val();
-            setInterval(() => {
-                getStatus(districtId);
-            }, 1000);
+            if(districtId !== ''){
+                statusInterval = setInterval(() => {
+                    getStatus(districtId);
+                }, 2000);
+            }else{
+                clearInterval(statusInterval);
+            }
+            
         }
        function getStatus(selectedDistrict){
             var bodyHtml = '';
