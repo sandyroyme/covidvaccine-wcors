@@ -49,7 +49,12 @@
             }else{
                 queryDistrictIds = otherDistrictIDs;
             }
-            let requests = queryDistrictIds.map(districtCode => fetch("https://cdn-api.co-vin.in/api/v2/appointment/sessions/calendarByDistrict?district_id="+districtCode+"&date=09-05-2021"));
+            let todayDate = `${new Date().getDate()}-${new Date().getMonth()+1}-${new Date().getFullYear()}`;
+            let requests = queryDistrictIds.map(districtCode => fetch("https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByDistrict?district_id="+districtCode+"&date="+todayDate+"", {
+            method: 'GET',
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+            }}));
 
             let promiseResponse = await Promise.all(requests).then(responses => Promise.all(responses.map(r => r.json())));
 
